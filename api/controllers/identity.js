@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const User = require('../schema/user')
 const config = require('../config.json')
 
-mongoose.connect(`mongodb://${process.env.DB_HOST}/Bitcoin21`, {
+mongoose.connect(`mongodb://${process.env.DB_HOST}/Blackjack`, {
   useNewUrlParser: true
 })
 
@@ -317,5 +317,19 @@ module.exports = {
       // incomplete form
       res.sendStatus(400)
     }
+  },
+
+  getBalance: (req, res) => {
+    User.findOne({ email: req.email }, (err, doc) => {
+      if (!err) {
+        if (doc) {
+          res.send({ balance: doc.balance })
+        } else {
+          res.sendStatus(404)
+        }
+      } else {
+        res.sendStatus(500)
+      }
+    })
   }
 }
