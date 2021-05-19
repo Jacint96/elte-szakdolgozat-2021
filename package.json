@@ -1,0 +1,14 @@
+{
+    "name": "Blackjack",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Jacint Korolovych",
+    "license": "UNLICENSED",
+    "devDependencies": {
+      "eslint": "^6.2.0",
+      "eslint-config-prettier": "^6.1.0",
+      "eslint-plugin-prettier": "^3.1.0",
+      "eslint-plugin-react": "^7.14.3",
+      "prettier": "^1.18.2"
+    }
+  }
