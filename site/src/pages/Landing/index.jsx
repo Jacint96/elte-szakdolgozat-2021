@@ -42,7 +42,7 @@ class Landing extends React.PureComponent {
 
   render() {
     return (
-      <Layout>
+      <Layout title="Log in">
         <h1>Blackjack</h1>
         <hr />
         <form onSubmit={this.handleLogin}>
