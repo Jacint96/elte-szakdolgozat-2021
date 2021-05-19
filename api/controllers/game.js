@@ -4,7 +4,7 @@ const actions = blackjack.actions
 const Game = blackjack.Game
 const redis = require('redis')
 
-mongoose.connect(`mongodb://${process.env.DB_HOST}/Bitcoin21`, {
+mongoose.connect(`mongodb://${process.env.DB_HOST}/Blackjack`, {
   useNewUrlParser: true
 })
 
@@ -13,7 +13,9 @@ const client = redis.createClient()
 module.exports = {
   start: (req, res) => {
     const game = new Game()
-    const afterDealState = game.dispatch(actions.deal())
+    const afterDealState = game.dispatch(
+      actions.deal({ bet: parseInt(req.params.bet) })
+    )
     client.set(req.uid.toString(), JSON.stringify(afterDealState))
     res.send(afterDealState)
   },
