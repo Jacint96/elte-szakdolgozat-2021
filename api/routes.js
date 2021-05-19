@@ -1,13 +1,12 @@
 const express = require('express')
 const identity = require('./controllers/identity')
+const game = require('./controllers/game')
 const auth = require('./middleware/auth')
 
 const router = express.Router()
-
 router.route('/').get((req, res) => {
   res.sendStatus(200)
 })
-
 // Identity
 router.route('/identity/register').post(identity.register)
 router.route('/identity/login').post(identity.login)
@@ -24,4 +23,16 @@ router
   .post(identity.verifyPasswordResetToken)
 router.route('/identity/password/reset').post(identity.resetPassword)
 
-module.exports = router
+// Game
+router
+  .use(auth)
+  .route('/game/start')
+  .get(game.start)
+router
+  .use(auth)
+  .route('/game/state')
+  .get(game.getState)
+router
+  .use(auth)
+  .route('/game/action/:action')
+  .get(game.doAction)
