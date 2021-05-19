@@ -2,7 +2,6 @@ const express = require('express')
 const identity = require('./controllers/identity')
 const game = require('./controllers/game')
 const auth = require('./middleware/auth')
-
 const router = express.Router()
 router.route('/').get((req, res) => {
   res.sendStatus(200)
@@ -22,7 +21,6 @@ router
   .route('/identity/password/reset/verify')
   .post(identity.verifyPasswordResetToken)
 router.route('/identity/password/reset').post(identity.resetPassword)
-
 // Game
 router
   .use(auth)
@@ -30,9 +28,15 @@ router
   .get(game.start)
 router
   .use(auth)
+  .route('/game/end')
+  .get(game.end)
+router
+  .use(auth)
   .route('/game/state')
   .get(game.getState)
 router
   .use(auth)
-  .route('/game/action/:action')
+  .route('/game/action/:action/:option?')
   .get(game.doAction)
+
+module.exports = router
