@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 import { Helmet } from 'react-helmet'
+import numeral from 'numeral'
 
 import styles from './Layout.module.scss'
 
@@ -39,11 +40,11 @@ class Layout extends React.PureComponent {
           />
           <meta
             property="description"
-            content="Play Blackjack online"
+            content="Play Bitcoin Blackjack online"
           />
           <meta
             property="og:description"
-            content="Play Blackjack online"
+            content="Play Bitcoin Blackjack online"
           />
           <meta property="og:type" content="website" />
         </Helmet>
@@ -55,7 +56,7 @@ class Layout extends React.PureComponent {
                   Blackjack
                 </Link>
                 <div className={styles.ProfileControls}>
-                  <p>Balance: {balance}</p>
+                  <p>Balance: {numeral(balance).format('0,0')}</p>
                   <button onClick={this.handleLogout}>Log out</button>
                 </div>
               </>
