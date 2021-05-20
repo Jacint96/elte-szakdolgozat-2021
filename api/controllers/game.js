@@ -1,21 +1,24 @@
 const mongoose = require('mongoose')
-const blackjack = require('engine-blackjack')
-const actions = blackjack.actions
-const Game = blackjack.Game
+const { Game, actions, presets } = require('engine-blackjack')
 const redis = require('redis')
 const User = require('../schema/user')
 
-const dbHost = process.env.DOCKER ? '21satoshi-mongo' : 'localhost'
-mongoose.connect(`mongodb://${dbHost}/21satoshi`, {
+const dbHost = process.env.DOCKER ? 'Blackjack-mongo' : 'localhost'
+mongoose.connect(`mongodb://${dbHost}/Blackjack`, {
   useNewUrlParser: true
 })
 
-const redisHost = process.env.DOCKER ? '21satoshi-redis' : 'localhost'
+const redisHost = process.env.DOCKER ? 'Blackjack-redis' : 'localhost'
 const client = redis.createClient({ host: redisHost })
+
+const overrideRules = {
+  decks: 6,
+  insurance: false
+}
 
 module.exports = {
   start: (req, res) => {
-    const game = new Game()
+    const game = new Game(null, presets.getRules(overrideRules))
     const afterDealState = game.dispatch(
       actions.deal({ bet: parseInt(req.params.bet) })
     )

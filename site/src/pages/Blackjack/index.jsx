@@ -20,8 +20,9 @@ class Blackjack extends React.PureComponent {
       valueToBet: 0,
       denominationsToBet: []
     }
-    this.denominations = [10000, 25000, 50000, 100000, 250000, 500000, 1000000]
+    this.denominations = [10, 25, 50, 100, 250, 500, 1000]
     this.cookies = new Cookies()
+    this.dealButton = React.createRef()
     this.handleLogout = this.handleLogout.bind(this)
     this.startGame = this.startGame.bind(this)
     this.performAction = this.performAction.bind(this)
@@ -48,7 +49,6 @@ class Blackjack extends React.PureComponent {
     })
 
     window.addEventListener('keypress', e => {
-      console.log(e)
       this.handleHotkey(e.key)
     })
   }
@@ -177,7 +177,39 @@ class Blackjack extends React.PureComponent {
   }
 
   handleHotkey(key) {
-    if (this.state.gameState.stage.startsWith('player-turn-')) {
+    if (!this.state.gameState) {
+      switch (key) {
+        case ' ':
+          this.dealButton.current.click()
+          break
+        case 'c':
+          this.clearBet()
+          break
+        case '1':
+          this.addToBet(this.denominations[0])
+          break
+        case '2':
+          this.addToBet(this.denominations[1])
+          break
+        case '3':
+          this.addToBet(this.denominations[2])
+          break
+        case '4':
+          this.addToBet(this.denominations[3])
+          break
+        case '5':
+          this.addToBet(this.denominations[4])
+          break
+        case '6':
+          this.addToBet(this.denominations[5])
+          break
+        case '7':
+          this.addToBet(this.denominations[6])
+          break
+        default:
+          break
+      }
+    } else if (this.state.gameState.stage.startsWith('player-turn-')) {
       switch (key) {
         case 'h':
           this.performAction('hit', this.state.currentHand)
@@ -234,9 +266,9 @@ class Blackjack extends React.PureComponent {
                 required
               />
               <div className={styles.TotalBet}>
-                <h2>{numeral(valueToBet).format('0,0')} sat</h2>
+                <h2>{numeral(valueToBet).format('0,0')}</h2>
                 <Button type="button" onClick={this.clearBet}>
-                  Clear
+                  Clear (C)
                 </Button>
               </div>
               <div className={classnames(styles.CardGroup, styles.ChipGroup)}>
@@ -267,8 +299,11 @@ class Blackjack extends React.PureComponent {
                 className={styles.DealButton}
                 disabled={valueToBet > this.state.balance || valueToBet <= 0}
               >
-                Deal!
+                Deal! (SPACE)
               </Button>
+              <button style={{ display: 'none' }} ref={this.dealButton}>
+                submit
+              </button>
             </form>
           </Modal>
         )}
