@@ -2,12 +2,16 @@ const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const config = require('../config.json')
 const User = require('../schema/user')
-mongoose.connect(`mongodb://${process.env.DB_HOST}/Bitcoin21`, {
+
+const dbHost = process.env.DOCKER ? 'Blackjack-mongo' : 'localhost'
+mongoose.connect(`mongodb://${dbHost}/Blackjack`, {
   useNewUrlParser: true
 })
+
 module.exports = (req, res, next) => {
   if (req.headers.authorization) {
     const token = req.headers.authorization
+
     jwt.verify(token, config.userJwtSecret, (err, decoded) => {
       if (!err && decoded) {
         User.findOne({ email: decoded.email }, (err, doc) => {
